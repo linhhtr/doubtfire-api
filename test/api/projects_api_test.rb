@@ -11,10 +11,23 @@ class ProjectsApiTest < ActiveSupport::TestCase
   end
 
   def test_can_get_projects
-    user = FactoryBot.create(:user, :student, enrol_in: 0)
-    get with_auth_token('/api/projects', user)
+    # Create a new dummy unit
+    unit = FactoryBot.create(:unit)
+
+    # Get a new project from unit
+    new_project = unit.active_projects.first
+    student = new_project.student
+
+    # Perform Get   new_project.main_convenor_user
+    get with_auth_token "/api/projects/#{new_project.id}", new_project.student
+    actual_project = last_response_body
+    
+    # Check if the call success
     assert_equal 200, last_response.status
-  end
+
+    # Check the returned details match as new_project
+    assert_equal actual_project['project_id'], new_project.id
+  end 
 
   def test_projects_returns_correct_number_of_projects
     user = FactoryBot.create(:user, :student, enrol_in: 2)
