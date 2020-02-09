@@ -23,6 +23,16 @@ class ActivityTypesApiTest < ActiveSupport::TestCase
     end
   end
 
+  def test_get_an_activity_type
+    expected_data = FactoryBot.create(:activity_type)
+
+    get "/api/activity_types/#{expected_data.id}"
+
+    response_keys = %w(name abbreviation)
+    assert_json_matches_model(last_response_body, expected_data, response_keys)
+  
+  end
+
   # POST tests
   # 1: Admin can create a new activity type
   def test_admin_can_post_activity_type
