@@ -95,7 +95,6 @@ class ProjectsApiTest < ActiveSupport::TestCase
   def test_change_project_compile_portfolio
     project = Project.first
     to_update = project
-    puts project.to_json
 
     # Perform update, change project compile portfolio
     put_json with_auth_token("/api/projects/#{project.id}"), { compile_portfolio: true }
